@@ -1,85 +1,64 @@
 # GoodTracker
 
-GoodTracker is a mobile application planned for reserving shared laboratory and office equipment. We are developing it as our semester project for **SE3003 - Software Project Management**.
+GoodTracker is our **SE3003 - Software Project Management** project. We plan to build a mobile app for reserving shared laboratory and office equipment.
 
-Students and staff sometimes need to ask several people or check separate files to find out whether equipment is available. Our aim is to bring equipment information, availability, and reservation requests into one place.
-
-**Current status:** Initial planning. This repository does not contain a working application yet. The features and technologies below describe our proposed MVP.
-
-## Who is it for?
-
-University students, academic and administrative staff, laboratory assistants, and equipment coordinators who share resources such as projectors, laptops, cameras, and laboratory devices.
-
-The problems described above are initial assumptions. We plan to check them through short interviews or a questionnaire with potential users.
+We are currently preparing M1. The application has not been implemented yet.
 
 ## Planned features
 
-- Sign in to the mobile app.
-- Browse, search, and filter equipment by category or location.
-- View equipment details and availability.
-- Request or cancel a reservation and view reservation history.
-- Prevent overlapping bookings for the same equipment.
-- Allow authorized staff to add or update equipment and approve or reject requests.
+- Sign in and browse equipment.
+- Search by category or location and check availability.
+- Request or cancel a reservation and see its status.
+- Prevent overlapping bookings.
+- Let staff manage equipment and approve or reject requests.
 
-Our target is a small, usable Android demo within the semester. Payments, university single sign-on, push notifications, IoT tracking, advanced inventory management, and a public app-store release are outside the initial scope.
+Our goal is a small Android demo. Payments, university SSO, push notifications and an app-store release are outside the initial scope.
 
 ## Planned technologies
 
-| Part | Technology |
-| --- | --- |
-| Mobile app | React Native with Expo and TypeScript |
-| Backend | Node.js, Express, and TypeScript |
-| Database and authentication | Supabase PostgreSQL and Auth |
-| API documentation and testing | Postman / OpenAPI |
-| Task tracking and version control | GitHub Issues, Projects, and pull requests |
-
-We will validate this stack with a small end-to-end prototype before building the rest of the features. Setup instructions will be added when the application code is available.
+React Native with Expo and TypeScript for mobile, Node.js with Express for the backend, and Supabase for the database and authentication. We will check this setup with a small prototype before building the full flow.
 
 ## Team
 
-| Member | Main responsibility |
+| Member | Main role |
 | --- | --- |
-| Talha Yılmaz | Mobile UI, navigation, and user requirements |
+| Talha Yılmaz | Mobile UI and navigation |
 | Eylül Melda Çakmak | Mobile API integration and acceptance checks |
-| Kerem Tuna | Database, equipment API, and technical coordination |
-| Kardelen Darğın | Reservation API, deployment, and project tracking |
+| Kerem Tuna | Database and equipment API |
+| Kardelen Darğın | Reservation API and project tracking |
 
-Testing, documentation, and project management are shared responsibilities. The team agreement and RACI matrix will describe these in more detail.
+Testing and documentation are shared responsibilities.
 
-## How we will work
+## Folder structure
+
+```text
+good_tracker/
+├── README.md
+├── .gitignore
+├── mobile/
+├── backend/
+└── docs/
+    └── m1/
+        ├── M1 Project Initiation Report Template.docx
+        └── evidence/
+```
+
+Mobile and backend are empty for now. We will add code folders when we start implementing features. The .gitkeep files only keep empty folders visible in Git.
+
+## M1 documents
+
+For now, docs is limited to M1: the official Word template, the report we prepare from it, its final PDF and the evidence used in that report. We will not create folders for later milestones yet.
+
+Keep the charter, stakeholder analysis, delivery approach, success criteria, risks, planned vs. actual, next milestone plan and individual contributions together in the report. Write the 150–200 word executive summary after these sections are ready. Separate Markdown files for each section are not needed.
+
+The local task allocation records Kerem for the charter and report assembly, Talha for stakeholder analysis, Eylül for success criteria, and Kardelen for the delivery approach and risks. Everyone adds their own actual contribution and reviews the report.
+
+Use evidence for real work: meeting notes, relevant designs, board screenshots and contribution links. Explain what each item shows in the report. Keep short weekly updates in the project board or issue comments for now. Confirm the deadline and submission instructions in the LMS.
+
+## Working together
 
 [Project board](https://github.com/users/keremtuna0/projects/2) · [Issues](https://github.com/keremtuna0/good_tracker/issues)
 
-We will track tasks using **Backlog → To Do → In Progress → Review/Test → Done**. Each task should have an owner and clear acceptance criteria.
+Use Backlog → To Do → In Progress → Review/Test → Done. Each task should have an owner and a clear expected result. Work on a branch, open a pull request and ask another member to review it. Record completed work honestly with links to the actual changes.
 
-Each member will work from their own GitHub account, use feature branches, and open pull requests linked to issues. Another team member will review the work before it is merged. A task should move to Done after its acceptance criteria are checked, relevant tests pass, and documentation is updated where needed.
-
-We plan to build one complete reservation flow early to reduce integration risk. We will also review scope and workload each week to avoid adding too many features or leaving work unevenly distributed. The delivery approach and its rationale will be finalized in M1.
-
-## Course milestones
-
-| Milestone | Main focus |
-| --- | --- |
-| M0 - Project Selection | Problem, initial scope, team roles, and risks |
-| M1 - Project Initiation | Charter, stakeholders, success criteria, and delivery approach |
-| M2 - Project Plan Baseline | Backlog/WBS, estimates, schedule, RACI, and risk register |
-| M3 - Midterm Review | Working increment, progress metrics, and planned vs. actual results |
-| M4 - Control and Adaptation | Change requests, impact analysis, updated plans, and quality evidence |
-| M5 - Project Closure | Final demo, report, retrospective, and peer evaluation |
-
-We will follow the official report templates and check the LMS for confirmed deadlines. This README is an overview; it does not replace the milestone reports.
-
-## Documentation and progress
-
-We plan to keep milestone reports, weekly updates, and supporting evidence under `docs/` as they are prepared. This will include planning documents, risks and decisions, change records, test results, progress metrics, and lessons learned.
-
-Weekly updates will cover:
-
-- Team, week, and current milestone or sprint.
-- Work completed and plans for next week.
-- Main blocker or risk.
-- Planned vs. actual progress and reasons for differences.
-- Decisions or support needed.
-- Each member's contribution, with links to issues, commits, or pull requests.
-
-For the demo, we will check the complete reservation flow, overlapping-booking prevention, and staff permissions against agreed acceptance criteria. Test results and user feedback will be kept as evidence.
+Older issue descriptions may mention separate document paths. For M1, those sections will now be collected in the shared report under docs/m1.

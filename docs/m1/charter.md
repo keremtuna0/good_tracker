@@ -24,7 +24,7 @@ We plan to use React Native with Expo and TypeScript for the mobile app, Node.js
 
 ## 2.3 Constraints
 
-- We need to work within the SE3003 milestones. We still need to confirm the submission dates and instructions in the LMS.
+- We need to work within the SE3003 milestones. The M1 report is due through DYS on 22 October 2026, and M2 is due on 1 November 2026. One team member can submit each report for the group.
 - We are a four-person student team. Each person has a main role, but testing and documentation are shared work.
 - The first demo is limited to Android. The mobile app and backend have not been built yet.
 - We do not yet have confirmed access to real equipment records or users for feedback, so the demo may use sample data.

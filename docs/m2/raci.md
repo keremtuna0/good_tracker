@@ -29,8 +29,8 @@ Database design	I	C	R/A	C
 Equipment API development	I	C	R/A	C
 Reservation API development	C	C	C	R/A
 Project tracking	I	I	I	R/A
-Testing	R	R	R	R
-Documentation	R	R	R	R
+Testing       R    A    R    R
+Documentation R    R    C    A
 
 4. Responsibility Rules
 

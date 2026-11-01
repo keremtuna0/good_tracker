@@ -24,9 +24,9 @@ Testing and documentation are shared responsibilities.
 
 4. GitHub Workflow
 
-* Each member should work on a separate branch.
-* Changes should be submitted through Pull Requests.
-* Another team member should review the Pull Request.
+* Work directly on `main` for this project and pull the latest changes before editing shared files.
+* Link each substantive commit to the relevant issue.
+* Another team member should review the committed change before its task is marked Done.
 * Commit messages should clearly describe the changes.
 * The project board should be updated regularly.
 
@@ -34,7 +34,7 @@ Testing and documentation are shared responsibilities.
 
 * Team members should review each other’s contributions.
 * Reviewers should check correctness, readability, and consistency.
-* Requested changes should be addressed before merging.
+* Review feedback should be addressed in a follow-up commit before the task is accepted.
 * Important issues should be discussed with the team.
 
 6. Communication Rules
@@ -57,7 +57,7 @@ A task is considered complete when:
 * The expected result has been achieved.
 * The work has been reviewed by another team member when applicable.
 * Relevant documentation has been updated.
-* The Pull Request has been accepted and merged.
+* The change has been committed to `main` and reviewed by another team member when applicable.
 * The project board status has been updated.
 
 9. Agreement

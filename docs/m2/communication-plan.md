@@ -1,60 +1,14 @@
-GoodTracker – Communication Plan
+# GoodTracker M2 communication plan
 
-1. Purpose
+Working team cadence adopted for planning on 1 November 2026. Times are Europe/Istanbul. The team may change the cadence in an issue after recording the reason.
 
-This communication plan defines how the GoodTracker project team shares information, coordinates tasks, reports progress, and handles problems.
+| Event or channel | Purpose | Participants | Frequency | Recorded output |
+| --- | --- | --- | --- | --- |
+| GitHub Issues and Project | Assign work, move status and record blockers | All members | Update when work changes; review each Sunday by 20:00 | Current owner, status, next step and evidence link |
+| GitHub commits and issue review | Review changes committed to `main` before marking the associated task Done | Author and at least one other member | For every substantive change | Reviewed commit, issue note and any corrections |
+| Team chat | Coordinate short questions and urgent blockers | All members | As needed; same day for blockers | Decision copied into a GitHub issue or weekly report |
+| Weekly team check | Compare plans with actual work and capacity | All members | Sunday 20:00, or an agreed replacement time | Short decision and risk note in the weekly report |
+| Weekly report | Record progress, actual effort, risks and each person's evidence | Talha coordinates; all contribute; Kardelen checks milestone consistency | Each course reporting week | Report and its DYS submission record when required |
+| Milestone report | Consolidate the shared team deliverable | Kardelen coordinates; all review | Before each published DYS deadline | Final report, evidence links and DYS receipt |
 
-2. Communication Channels
-
-Communication Type	Channel	Purpose
-Task tracking	GitHub Issues and Projects	Assign and monitor tasks
-Code collaboration	GitHub Pull Requests	Submit and review code changes
-Project documentation	GitHub Repository	Store and update project documents
-Team discussions	Agreed team communication channel	Discuss questions and decisions
-Meetings	Team meetings	Review progress and plan upcoming work
-
-3. Meeting Plan
-
-* The team will arrange meetings when coordination or important decisions are needed.
-* Meeting frequency and dates will be agreed upon by all members.
-* Meeting notes and important decisions should be documented when necessary.
-* Members who cannot attend should review the shared updates.
-* The team should aim to hold at least one coordination meeting per week when project activities are ongoing.
-
-4. Progress Reporting
-
-* Each team member should update the status of assigned tasks.
-* The project board should follow these stages: Backlog, To Do, In Progress, Review/Test, and Done.
-* Completed work should be supported by relevant GitHub links.
-* Delays and blockers should be reported as early as possible.
-
-5. Issue and Risk Communication
-
-* Technical problems should be reported to the team.
-* Each blocker should include a short explanation and, when possible, an alternative plan.
-* Tasks that may affect the project schedule should be discussed promptly.
-* Team members should request support when needed.
-* If a blocker cannot be resolved by the responsible member, it should be escalated to the project team for discussion and a decision.
-* Issues that threaten milestone deadlines should be brought to the attention of the whole team as soon as possible.
-
-6. Roles and Responsibilities
-
-All team members are responsible for communicating progress related to their assigned work.
-
-* Talha Yılmaz: Mobile UI and navigation updates.
-* Eylül Melda Çakmak: Mobile API integration and acceptance check updates.
-* Kerem Tuna: Database and equipment API updates.
-* Kardelen Darğın: Reservation API and project tracking updates.
-
-Testing and documentation are shared responsibilities.
-
-7. Communication Principles
-
-* Communication should be clear, respectful, and timely.
-* Important decisions should be shared with all relevant team members.
-* Team members should respond to project-related questions within a reasonable time.
-* Project information and decisions should be recorded when necessary.
-
-8. Plan Review
-
-This communication plan may be updated when the team’s communication needs or project activities change.
+Report an impediment in the relevant issue as soon as it is known. Include what is blocked, the effect on the plan, and a proposed response. The accountable person decides whether the baseline needs a change request. Important scope, schedule and technical changes follow the rule in the M2 report: document the impact, obtain the affected owner's and one other member's review, then update the plan and issue. The instructor is informed through the official milestone submission; this plan does not assume the instructor reads the project board.

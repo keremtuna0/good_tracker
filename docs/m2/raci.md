@@ -1,45 +1,19 @@
-GoodTracker – RACI Matrix
+# GoodTracker M2 responsibility matrix
 
-1. Purpose
+Working allocation adopted for planning on 1 November 2026. R performs the work, A makes the final project decision, C is consulted, and I is informed. Each activity has one accountable person. Implementation and testing remain future work.
 
-This RACI matrix defines the responsibilities of each team member for the main activities of the GoodTracker project.
+| Activity | Responsible | Accountable | Consulted | Informed |
+| --- | --- | --- | --- | --- |
+| Backlog and product scope | Talha | Kardelen | Kerem, Eylül | Whole team |
+| Effort estimates and assumptions | Kerem | Kerem | Talha, Eylül, Kardelen | Whole team |
+| Schedule and milestone coordination | Kardelen | Kardelen | Kerem, Talha, Eylül | Whole team |
+| Mobile navigation, browsing and search | Talha | Talha | Eylül, Kerem | Kardelen |
+| Authentication, data model and equipment API | Kerem | Kerem | Kardelen, Eylül | Talha |
+| Reservation API and conflict prevention | Kardelen | Kardelen | Kerem, Eylül | Talha |
+| Mobile and API integration | Eylül | Eylül | Talha, Kerem, Kardelen | Whole team |
+| Acceptance checks and defect evidence | Eylül | Eylül | Talha, Kerem, Kardelen | Whole team |
+| Weekly board and contribution evidence | Talha | Kardelen | Eylül, Kerem | Whole team |
+| M2 baseline report and DYS coordination | Kardelen | Kardelen | Talha, Kerem, Eylül | Whole team |
+| Final report and presentation | Kardelen with all contributors | Kardelen | Talha, Kerem, Eylül | Whole team |
 
-RACI definitions:
-
-* R (Responsible): The person who performs the task.
-* A (Accountable): The person ultimately responsible for the task.
-* C (Consulted): The person whose input is requested.
-* I (Informed): The person who is kept informed.
-
-2. Team Members
-
-* Talha Yılmaz – Mobile UI and navigation
-* Eylül Melda Çakmak – Mobile API integration and acceptance checks
-* Kerem Tuna – Database and equipment API
-* Kardelen Darğın – Reservation API and project tracking
-
-3. Responsibility Matrix
-
-Project Activity	Talha Yılmaz	Eylül Melda Çakmak	Kerem Tuna	Kardelen Darğın
-Mobile UI development	R/A	C	I	I
-Mobile navigation	R/A	C	I	I
-Mobile API integration	C	R/A	C	C
-Acceptance checks	C	R/A	C	C
-Database design	I	C	R/A	C
-Equipment API development	I	C	R/A	C
-Reservation API development	C	C	C	R/A
-Project tracking	I	I	I	R/A
-Testing       R    A    R    R
-Documentation R    R    C    A
-
-4. Responsibility Rules
-
-* Each activity should have a clearly identified responsible team member.
-* The accountable person coordinates the activity and ensures its completion.
-* Team members should communicate when they need support.
-* Testing and documentation are shared responsibilities.
-* Responsibilities may be updated if the project scope or team needs change.
-
-5. Review
-
-The team will review this matrix when responsibilities change or new project activities are added.
+The owner of a technical item may ask another member for help. The named accountable person remains responsible for recording changes to scope, effort and dates. A GitHub assignment is a plan, not proof of completed work.

@@ -19,6 +19,7 @@ Meetings	Team meetings	Review progress and plan upcoming work
 * Meeting frequency and dates will be agreed upon by all members.
 * Meeting notes and important decisions should be documented when necessary.
 * Members who cannot attend should review the shared updates.
+* The team should aim to hold at least one coordination meeting per week when project activities are ongoing.
 
 4. Progress Reporting
 
@@ -33,6 +34,8 @@ Meetings	Team meetings	Review progress and plan upcoming work
 * Each blocker should include a short explanation and, when possible, an alternative plan.
 * Tasks that may affect the project schedule should be discussed promptly.
 * Team members should request support when needed.
+* If a blocker cannot be resolved by the responsible member, it should be escalated to the project team for discussion and a decision.
+* Issues that threaten milestone deadlines should be brought to the attention of the whole team as soon as possible.
 
 6. Roles and Responsibilities
 

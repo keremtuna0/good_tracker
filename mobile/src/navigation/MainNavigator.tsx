@@ -7,6 +7,7 @@ import { useAuth } from '../auth/AuthContext';
 import PlaceholderScreen from '../screens/PlaceholderScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 
+
 const Tab = createBottomTabNavigator();
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
@@ -26,9 +27,7 @@ const screenOptions = {
 function BorrowerTabs() {
   return (
     <Tab.Navigator screenOptions={screenOptions}>
-      <Tab.Screen name="Equipment" options={{ tabBarIcon: tabIcon('grid-outline') }}>
-        {() => <PlaceholderScreen title="Find Equipment" note="Coming next: equipment list." />}
-      </Tab.Screen>
+     <Tab.Screen name="Equipment" component={EquipmentListScreen} options={{ tabBarIcon: tabIcon('grid-outline') }} />
       <Tab.Screen
         name="My reservations"
         options={{ tabBarIcon: tabIcon('calendar-outline') }}

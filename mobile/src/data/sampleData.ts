@@ -15,6 +15,22 @@ export const equipment: Equipment[] = [
     description: 'High-speed HDMI cable, 2 m.', status: 'maintenance' },
   { id: 'EQ-111', name: 'Oscilloscope Probe Kit', category: 'Tools', lab: 'Electronics Lab', location: 'Shelf B',
     description: 'Probe set for bench oscilloscopes.', status: 'available' },
+      { id: 'EQ-101', name: 'Arduino Uno R3 Board', category: 'Tools', lab: 'Electronics Lab', location: 'Shelf C',
+    description: 'Microcontroller board for prototyping.', status: 'available' },
+  { id: 'EQ-103', name: 'USB-C Charging Cable 1 m', category: 'Cables', lab: 'Lab B-204', location: 'Drawer 1',
+    description: 'USB-C to USB-C charging cable.', status: 'available' },
+  { id: 'EQ-105', name: 'DisplayPort to HDMI Adapter', category: 'Adapters', lab: 'Lab B-204', location: 'Cabinet 2',
+    description: 'Active DisplayPort to HDMI adapter.', status: 'borrowed', availableFrom: '16:00 today' },
+  { id: 'EQ-106', name: 'Soldering Station', category: 'Tools', lab: 'Electronics Lab', location: 'Bench 3',
+    description: 'Temperature-controlled soldering station.', status: 'maintenance' },
+  { id: 'EQ-107', name: 'Ethernet Cable 5 m', category: 'Cables', lab: 'Lab B-204', location: 'Drawer 2',
+    description: 'Cat6 network cable.', status: 'available' },
+  { id: 'EQ-108', name: 'USB-A to USB-C Adapter', category: 'Adapters', lab: 'Electronics Lab', location: 'Cabinet 1',
+    description: 'Small USB-A to USB-C adapter.', status: 'available' },
+  { id: 'EQ-110', name: 'Breadboard Kit', category: 'Tools', lab: 'Electronics Lab', location: 'Shelf B',
+    description: 'Breadboard with jumper wires.', status: 'available' },
+  { id: 'EQ-112', name: 'Laptop Charger 65W', category: 'Cables', lab: 'Lab B-204', location: 'Cabinet 3',
+    description: 'Universal 65W laptop charger.', status: 'borrowed', availableFrom: 'tomorrow 09:00' },
 ];
 
 export const reservations: Reservation[] = [

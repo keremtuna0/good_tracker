@@ -34,6 +34,8 @@ export const equipment: Equipment[] = [
 ];
 
 export const reservations: Reservation[] = [
-  { id: 'r1', equipmentId: 'EQ-102', userId: 'u1', date: '2026-11-14', startHour: 13, endHour: 15, status: 'approved' },
-  { id: 'r2', equipmentId: 'EQ-104', userId: 'u1', date: '2026-11-15', startHour: 11, endHour: 13, status: 'pending' },
+  { id: 'r1', equipmentId: 'EQ-102', userId: 'u1', date: '2026-11-14', startHour: 13, endHour: 15, status: 'approved', handledBy: 'Staff01', handledAt: 'Today at 12:15' },
+  { id: 'r2', equipmentId: 'EQ-104', userId: 'u1', date: '2026-11-15', startHour: 11, endHour: 13, status: 'pending', requestedAgo: '5m ago' },
+  { id: 'r3', equipmentId: 'EQ-104', userId: 'u2', date: '2026-11-15', startHour: 12, endHour: 14, status: 'pending', requestedAgo: '12m ago' },
+  { id: 'r4', equipmentId: 'EQ-111', userId: 'u2', date: '2026-11-13', startHour: 10, endHour: 12, status: 'rejected', note: 'Lab exam / class session', noteDetails: 'Reserved for CS102 lab exam until 17:00.', handledBy: 'Staff01', handledAt: 'Yesterday at 16:40' },
 ];

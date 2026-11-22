@@ -13,9 +13,9 @@ const labs = [ALL_LABS, ...Array.from(new Set(equipment.map((e) => e.lab)))];
 const categories = [ALL, ...Array.from(new Set(equipment.map((e) => e.category)))];
 
 function availabilityLine(e: Equipment) {
-  if (e.status === 'available') return { text: 'Ready to book', color: colors.primaryDark };
+  if (e.status === 'available') return { text: 'Ready to book', color: colors.extra.blue013D72 };
   if (e.status === 'borrowed')
-    return { text: e.availableFrom ? `Free from ${e.availableFrom}` : 'Currently borrowed', color: colors.borrowedText };
+    return { text: e.availableFrom ? `Free from ${e.availableFrom}` : 'Currently in use', color: colors.primary };
   return { text: 'Temporarily out of service', color: colors.textSecondary };
 }
 
@@ -119,7 +119,7 @@ export default function EquipmentListScreen() {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={{ flexGrow: 0 }}
+        style={{ flexGrow: 0, flexShrink: 0 }}
         contentContainerStyle={styles.chips}
         keyboardShouldPersistTaps="handled"
       >
@@ -127,13 +127,7 @@ export default function EquipmentListScreen() {
           label="Available now"
           active={availableOnly}
           onPress={() => setAvailableOnly((v) => !v)}
-          left={
-            availableOnly ? (
-              <Ionicons name="checkmark" size={16} color="#fff" />
-            ) : (
-              <View style={styles.greenDot} />
-            )
-          }
+                    left={availableOnly ? <Ionicons name="checkmark" size={16} color="#fff" /> : undefined}
         />
         <Chip
           label={lab}

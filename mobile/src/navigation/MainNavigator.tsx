@@ -6,6 +6,7 @@ import { colors } from '../theme';
 import { useAuth } from '../auth/AuthContext';
 import PlaceholderScreen from '../screens/PlaceholderScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import EquipmentListScreen from '../screens/EquipmentListScreen';
 
 
 const Tab = createBottomTabNavigator();

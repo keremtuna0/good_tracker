@@ -30,5 +30,9 @@ export interface Reservation {
   startHour: number;   // 13 = 13:00
   endHour: number;     // 15 = 15:00
   status: ReservationStatus;
-  note?: string;       
+  note?: string;         // red nedeni
+  noteDetails?: string;  // red açıklaması
+  handledBy?: string;
+  handledAt?: string;
+  requestedAgo?: string; // "5m ago"
 }

@@ -7,6 +7,8 @@ import { useAuth } from '../auth/AuthContext';
 import PlaceholderScreen from '../screens/PlaceholderScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import EquipmentListScreen from '../screens/EquipmentListScreen';
+import RequestsScreen from '../screens/staff/RequestsScreen';
+import { useData } from '../data/DataContext';
 
 
 const Tab = createBottomTabNavigator();
@@ -41,11 +43,15 @@ function BorrowerTabs() {
 }
 
 function StaffTabs() {
+  const { reservations } = useData();
+  const pendingCount = reservations.filter((r) => r.status === 'pending').length;
   return (
     <Tab.Navigator screenOptions={screenOptions}>
-      <Tab.Screen name="Requests" options={{ tabBarIcon: tabIcon('list-outline') }}>
-        {() => <PlaceholderScreen title="Requests" note="Coming soon." />}
-      </Tab.Screen>
+      <Tab.Screen
+        name="Requests"
+        component={RequestsScreen}
+        options={{ tabBarIcon: tabIcon('list-outline'), tabBarBadge: pendingCount > 0 ? pendingCount : undefined }}
+      />
       <Tab.Screen name="Inventory" options={{ tabBarIcon: tabIcon('cube-outline') }}>
         {() => <PlaceholderScreen title="Inventory" note="Coming soon." />}
       </Tab.Screen>

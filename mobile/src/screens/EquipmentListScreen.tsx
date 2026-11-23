@@ -6,6 +6,9 @@ import { colors, radius } from '../theme';
 import { equipment } from '../data/sampleData';
 import { Equipment } from '../types';
 import StatusBadge from '../components/StatusBadge';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParams } from '../navigation/types';
 
 const ALL_LABS = 'All Labs';
 const ALL = 'All';
@@ -32,6 +35,7 @@ function Chip({ label, active, onPress, left, right }: {
 }
 
 export default function EquipmentListScreen() {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
   const [query, setQuery] = useState('');
   const [focused, setFocused] = useState(false);
   const [availableOnly, setAvailableOnly] = useState(false);
@@ -165,9 +169,9 @@ export default function EquipmentListScreen() {
             <Pressable
               style={styles.card}
               accessibilityRole="button"
-              onPress={() => {
-                // Sonraki adım: detay ekranına git
-              }}
+                onPress={() => navigation.navigate('EquipmentDetail', { equipmentId: item.id })
+                }
+              
             >
               <View style={styles.cardTop}>
                 <Text style={styles.cardName}>{item.name}</Text>

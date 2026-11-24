@@ -12,6 +12,8 @@ import ProfileScreen from '../screens/ProfileScreen';
 import EquipmentListScreen from '../screens/EquipmentListScreen';
 import EquipmentDetailScreen from '../screens/EquipmentDetailScreen';
 import RequestsScreen from '../screens/staff/RequestsScreen';
+import InventoryScreen from '../screens/staff/InventoryScreen';
+import EquipmentFormScreen from '../screens/staff/EquipmentFormScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParams>();
@@ -62,10 +64,19 @@ function StaffTabs() {
         options={{ tabBarIcon: tabIcon('list-outline'), tabBarBadge: pendingCount > 0 ? pendingCount : undefined }}
       />
       <Tab.Screen name="Inventory" options={{ tabBarIcon: tabIcon('cube-outline') }}>
-        {() => <PlaceholderScreen title="Inventory" note="Coming soon." />}
+        {() => <Tab.Screen name="Inventory" component={InventoryScreen} options={{ tabBarIcon: tabIcon('cube-outline') }} />}
       </Tab.Screen>
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarIcon: tabIcon('person-outline') }} />
     </Tab.Navigator>
+  );
+}
+
+function StaffRoot() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Tabs" component={StaffTabs} />
+      <Stack.Screen name="EquipmentForm" component={EquipmentFormScreen} />
+    </Stack.Navigator>
   );
 }
 
@@ -73,7 +84,7 @@ export default function MainNavigator() {
   const { user } = useAuth();
   return (
     <NavigationContainer>
-      {user?.role === 'staff' ? <StaffTabs /> : <BorrowerRoot />}
+      {user?.role === 'staff' ? <StaffRoot /> : <BorrowerRoot />}
     </NavigationContainer>
   );
 }

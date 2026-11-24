@@ -90,8 +90,11 @@ export function booking(
 }
 export function equipmentInput(value: unknown, id?: string): Equipment {
   const b = object(value);
-  const status = b.status ?? 'available';
-  if (!['available', 'borrowed', 'maintenance'].includes(String(status)))
+  const status = b.status === undefined ? 'available' : b.status;
+  if (
+    typeof status !== 'string' ||
+    !['available', 'borrowed', 'maintenance'].includes(status)
+  )
     fail(400, 'VALIDATION', 'Invalid equipment status.');
   return {
     id: id ?? text(b.id, 'id', 64),

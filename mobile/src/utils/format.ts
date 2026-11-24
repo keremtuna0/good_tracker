@@ -23,12 +23,18 @@ export const monthYear = (date: string) => {
 };
 
 export function isoDate(offsetDays = 0) {
-  const d = new Date();
-  d.setDate(d.getDate() + offsetDays);
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${d.getFullYear()}-${m}-${day}`;
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/Istanbul', year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(new Date());
+  const get = (key: string) => parts.find(p => p.type === key)!.value;
+  const d = new Date(`${get('year')}-${get('month')}-${get('day')}T12:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + offsetDays);
+  return d.toISOString().slice(0, 10);
 }
+
+export const bookingHour = () => Number(new Intl.DateTimeFormat('en-GB', {
+  timeZone: 'Europe/Istanbul', hour: '2-digit', hourCycle: 'h23',
+}).format(new Date()));
 
 export const initials = (name: string) =>
   name.charAt(0).toUpperCase() + (name.match(/(\d)$/)?.[1] ?? '');

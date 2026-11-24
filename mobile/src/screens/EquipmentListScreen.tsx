@@ -3,19 +3,19 @@ import { FlatList, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, Vi
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, radius } from '../theme';
-import { equipment } from '../data/sampleData';
+import { useData } from '../data/DataContext';
 import { Equipment } from '../types';
 import StatusBadge from '../components/StatusBadge';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParams } from '../navigation/types';
+import { bookingHour, hh, isoDate } from '../utils/format';
 
 const ALL_LABS = 'All Labs';
 const ALL = 'All';
-const labs = [ALL_LABS, ...Array.from(new Set(equipment.map((e) => e.lab)))];
-const categories = [ALL, ...Array.from(new Set(equipment.map((e) => e.category)))];
 
-function availabilityLine(e: Equipment) {
+function availabilityLine(e: Equipment, busyUntil?: number) {
+  if (busyUntil !== undefined) return { text: `Free from ${hh(busyUntil)}`, color: colors.primary };
   if (e.status === 'available') return { text: 'Ready to book', color: colors.extra.blue013D72 };
   if (e.status === 'borrowed')
     return { text: e.availableFrom ? `Free from ${e.availableFrom}` : 'Currently in use', color: colors.primary };
@@ -35,6 +35,11 @@ function Chip({ label, active, onPress, left, right }: {
 }
 
 export default function EquipmentListScreen() {
+  const { equipment, busySlots, loading, error, refresh } = useData();
+  const now = bookingHour(), today = isoDate();
+  const currentBooking = (e: Equipment) => busySlots.find(r => r.equipmentId === e.id && r.date === today && r.startHour <= now && r.endHour > now);
+  const labs = [ALL_LABS, ...Array.from(new Set(equipment.map((e) => e.lab)))];
+  const categories = [ALL, ...Array.from(new Set(equipment.map((e) => e.category)))];
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
   const [query, setQuery] = useState('');
   const [focused, setFocused] = useState(false);
@@ -47,12 +52,12 @@ export default function EquipmentListScreen() {
 
   const matches = (e: Equipment, onlyAvailable: boolean) => {
     const q = query.trim().toLowerCase();
-    const textOk = q === '' || [e.name, e.id, e.category, e.lab].some((v) => v.toLowerCase().includes(q));
+    const textOk = q === '' || [e.name, e.id, e.category, e.lab, e.location].some((v) => v.toLowerCase().includes(q));
     return (
       textOk &&
       (lab === ALL_LABS || e.lab === lab) &&
       (category === ALL || e.category === category) &&
-      (!onlyAvailable || e.status === 'available')
+      (!onlyAvailable || (e.status === 'available' && !currentBooking(e)))
     );
   };
 
@@ -157,6 +162,9 @@ export default function EquipmentListScreen() {
       </View>
 
       <FlatList
+        refreshing={loading}
+        onRefresh={() => { void refresh(); }}
+        ListHeaderComponent={error ? <Text accessibilityRole="alert" style={{ padding: 12, color: colors.danger }}>{error} Pull down to retry.</Text> : undefined}
         data={results}
         keyExtractor={(e) => e.id}
         contentContainerStyle={styles.list}
@@ -164,7 +172,8 @@ export default function EquipmentListScreen() {
         ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
         ListEmptyComponent={renderEmpty}
         renderItem={({ item }) => {
-          const line = availabilityLine(item);
+          const busy = currentBooking(item);
+          const line = availabilityLine(item, item.status === 'maintenance' ? undefined : busy?.endHour);
           return (
             <Pressable
               style={styles.card}
@@ -175,7 +184,7 @@ export default function EquipmentListScreen() {
             >
               <View style={styles.cardTop}>
                 <Text style={styles.cardName}>{item.name}</Text>
-                <StatusBadge status={item.status} />
+                <StatusBadge status={item.status === 'maintenance' ? 'maintenance' : busy ? 'borrowed' : item.status} />
               </View>
               <Text style={styles.cardMeta}>{item.category} · {item.lab}</Text>
               <View style={styles.cardBottom}>

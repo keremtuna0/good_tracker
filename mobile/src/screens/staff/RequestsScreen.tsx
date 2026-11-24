@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react';
 import { FlatList, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, radius } from '../../theme';
-import { useAuth } from '../../auth/AuthContext';
 import { overlaps, useData } from '../../data/DataContext';
-import { users } from '../../data/sampleData';
 import { Reservation } from '../../types';
 import { duration, formatDate, formatRange, initials } from '../../utils/format';
 
@@ -16,18 +14,20 @@ const REASONS = [
 ];
 
 export default function RequestsScreen() {
-  const { user } = useAuth();
-  const { equipment, reservations, approveRequest, rejectRequest, restore } = useData();
+  const { equipment, reservations, approveRequest, rejectRequest, loading, error, refresh } = useData();
   const [tab, setTab] = useState<'pending' | 'handled'>('pending');
   const [rejecting, setRejecting] = useState<Reservation | null>(null);
   const [reason, setReason] = useState(REASONS[0]);
   const [details, setDetails] = useState('');
-  const [toast, setToast] = useState<{ text: string; snapshot: Reservation[] } | null>(null);
+  const [toast, setToast] = useState<{ text: string } | null>(null);
+  const [busy, setBusy] = useState(false);
 
-  const staffName = user?.name ?? 'Staff';
   const pending = reservations.filter((r) => r.status === 'pending');
   const handled = reservations.filter((r) => r.status === 'approved' || r.status === 'rejected');
-  const person = (id: string) => users.find((u) => u.id === id);
+  const person = (id: string) => {
+    const r = reservations.find(row => row.userId === id);
+    return { name: r?.borrowerName ?? 'Borrower', email: r?.borrowerEmail ?? '' };
+  };
   const item = (id: string) => equipment.find((e) => e.id === id);
 
   useEffect(() => {
@@ -44,9 +44,12 @@ export default function RequestsScreen() {
     return `Overlaps with ${person(other.userId)?.name ?? 'another user'}'s request (${formatRange(from, to)})`;
   };
 
-  const onApprove = (r: Reservation) => {
-    const snapshot = approveRequest(r.id, staffName);
-    setToast({ text: 'Request approved', snapshot });
+  const onApprove = async (r: Reservation) => {
+    if (busy) return;
+    setBusy(true);
+    try { await approveRequest(r.id); setToast({ text: 'Request approved' }); }
+    catch (e) { setToast({ text: e instanceof Error ? e.message : 'Could not approve request.' }); await refresh(); }
+    finally { setBusy(false); }
   };
 
   const openReject = (r: Reservation) => {
@@ -55,16 +58,12 @@ export default function RequestsScreen() {
     setDetails('');
   };
 
-  const confirmReject = () => {
-    if (!rejecting) return;
-    const snapshot = rejectRequest(rejecting.id, staffName, reason, details);
-    setRejecting(null);
-    setToast({ text: 'Request rejected', snapshot });
-  };
-
-  const onUndo = () => {
-    if (toast) restore(toast.snapshot);
-    setToast(null);
+  const confirmReject = async () => {
+    if (!rejecting || busy) return;
+    setBusy(true);
+    try { await rejectRequest(rejecting.id, reason, details); setRejecting(null); setToast({ text: 'Request rejected' }); }
+    catch (e) { setToast({ text: e instanceof Error ? e.message : 'Could not reject request.' }); await refresh(); }
+    finally { setBusy(false); }
   };
 
   const renderPending = ({ item: r }: { item: Reservation }) => {
@@ -81,7 +80,7 @@ export default function RequestsScreen() {
             <Text style={styles.userName}>{p?.name}</Text>
             <Text style={styles.userEmail}>{p?.email}</Text>
           </View>
-          <Text style={styles.ago}>{r.requestedAgo}</Text>
+          <Text style={styles.ago}>{r.createdAt ? formatDate(r.date) : ''}</Text>
         </View>
         <View style={styles.divider} />
         <Text style={styles.eqName}>{eq?.name}</Text>
@@ -96,10 +95,10 @@ export default function RequestsScreen() {
           </View>
         )}
         <View style={styles.actions}>
-          <Pressable style={[styles.btn, styles.reject]} onPress={() => openReject(r)}>
+          <Pressable disabled={busy} style={[styles.btn, styles.reject]} onPress={() => openReject(r)}>
             <Text style={styles.btnText}>Reject</Text>
           </Pressable>
-          <Pressable style={[styles.btn, styles.approve]} onPress={() => onApprove(r)}>
+          <Pressable disabled={busy} style={[styles.btn, styles.approve]} onPress={() => onApprove(r)}>
             <Text style={styles.btnText}>Approve</Text>
           </Pressable>
         </View>
@@ -163,6 +162,9 @@ export default function RequestsScreen() {
       </View>
 
       <FlatList
+        refreshing={loading}
+        onRefresh={() => { void refresh(); }}
+        ListHeaderComponent={error ? <Text accessibilityRole="alert" style={{ color: colors.danger }}>{error}</Text> : undefined}
         data={list}
         keyExtractor={(r) => r.id}
         renderItem={tab === 'pending' ? renderPending : renderHandled}
@@ -176,9 +178,6 @@ export default function RequestsScreen() {
       {toast && (
         <View style={styles.toast}>
           <Text style={styles.toastText}>{toast.text}</Text>
-          <Pressable onPress={onUndo} hitSlop={12}>
-            <Text style={styles.undo}>Undo</Text>
-          </Pressable>
         </View>
       )}
 
@@ -217,7 +216,7 @@ export default function RequestsScreen() {
               <Text style={styles.counter}>{details.length} / 200</Text>
               <Text style={styles.hint}>This message is shown to the borrower.</Text>
 
-              <Pressable style={[styles.btn, styles.reject, { marginTop: 16 }]} onPress={confirmReject}>
+              <Pressable disabled={busy} style={[styles.btn, styles.reject, { marginTop: 16 }]} onPress={confirmReject}>
                 <Text style={styles.btnText}>Reject Request</Text>
               </Pressable>
               <Pressable style={[styles.btn, styles.cancel]} onPress={() => setRejecting(null)}>
@@ -270,7 +269,7 @@ const styles = StyleSheet.create({
   cancel: { backgroundColor: colors.card, borderWidth: 1, borderColor: colors.borderStrong, marginTop: 10 },
   badge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 999 },
   badgeText: { fontSize: 12, fontWeight: '600' },
-  noteBox: { backgroundColor: colors.dangerSoftBg, borderRadius: 8, padding: 10, marginTop: 10 },
+  noteBox: { backgroundColor: colors.dangerBg, borderRadius: 8, padding: 10, marginTop: 10 },
   noteTitle: { fontSize: 12, fontWeight: '700', color: colors.dangerText },
   noteText: { fontSize: 12, color: colors.dangerText, marginTop: 2 },
   handledBy: { fontSize: 12, color: colors.textMuted, marginTop: 10 },

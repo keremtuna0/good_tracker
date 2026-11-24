@@ -1,7 +1,8 @@
 import { Equipment, Reservation, User } from '../types';
 import { isoDate } from '../utils/format';
 
-export const users: User[] = [
+// Legacy UI fixtures only. Runtime authentication/data come from the API.
+export const users: (User & { password: string })[] = [
   { id: 'u1', name: 'User01', email: 'borrower@demo.test', password: 'demo1234', role: 'borrower' },
   { id: 'u2', name: 'User02', email: 'borrower2@demo.test', password: 'demo1234', role: 'borrower' },
   { id: 's1', name: 'Staff01', email: 'staff@demo.test', password: 'demo1234', role: 'staff' },

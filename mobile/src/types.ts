@@ -7,7 +7,6 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  password: string; // for DEMO acc's
   role: Role;
 }
 
@@ -35,4 +34,7 @@ export interface Reservation {
   handledBy?: string;
   handledAt?: string;
   requestedAgo?: string; // "5m ago"
+  createdAt?: string;
+  borrowerName?: string;
+  borrowerEmail?: string;
 }

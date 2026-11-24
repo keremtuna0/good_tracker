@@ -6,10 +6,10 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { colors, radius, MAX_HOURS } from '../theme';
 import { useAuth } from '../auth/AuthContext';
 import { useData } from '../data/DataContext';
-import { Reservation } from '../types';
+import { ApiError } from '../api/client';
 import { RootStackParams } from '../navigation/types';
 import StatusBadge from '../components/StatusBadge';
-import { dayNumber, duration, formatDate, formatRange, hh, isoDate, monthYear, shortDay } from '../utils/format';
+import { dayNumber, duration, formatDate, formatRange, bookingHour, isoDate, monthYear, shortDay } from '../utils/format';
 
 const FIRST_HOUR = 9;
 const END_HOUR = 17;
@@ -23,29 +23,30 @@ const LIMIT_MSG = `Max ${MAX_HOURS} consecutive hours reached. Deselect the firs
 
 export default function EquipmentDetailScreen({ navigation, route }: Props) {
   const { user } = useAuth();
-  const { equipment, reservations, addReservation } = useData();
+  const { equipment, reservations, busySlots, addReservation, refresh, error } = useData();
   const item = equipment.find((e) => e.id === route.params.equipmentId);
 
   const dates = useMemo(() => Array.from({ length: DAYS_AHEAD }, (_, i) => isoDate(i)), []);
   const [date, setDate] = useState(dates[0]);
   const [sel, setSel] = useState<{ start: number; end: number } | null>(null);
   const [notice, setNotice] = useState('');
-  const [conflict, setConflict] = useState<Reservation | null>(null);
+  const [conflict, setConflict] = useState<{ date: string; startHour: number; endHour: number } | null>(null);
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   if (!item || !user) return null;
 
   const today = dates[0];
-  const currentHour = new Date().getHours();
+  const currentHour = bookingHour();
   const dayReservations = reservations.filter((r) => r.equipmentId === item.id && r.date === date);
-  const covers = (r: Reservation, h: number) => r.startHour <= h && h < r.endHour;
+  const covers = (r: { startHour: number; endHour: number }, h: number) => r.startHour <= h && h < r.endHour;
   const atLimit = sel !== null && sel.end - sel.start >= MAX_HOURS;
-  const shownNotice = notice || (atLimit ? LIMIT_MSG : '');
+  const shownNotice = error || notice || (atLimit ? LIMIT_MSG : '');
   const bookable = item.status !== 'maintenance';
 
   const slotState = (h: number): SlotState => {
     if (date === today && h <= currentHour) return 'past';
-    if (dayReservations.some((r) => r.status === 'approved' && covers(r, h))) return 'booked';
+    if (busySlots.some(r => r.equipmentId === item.id && r.date === date && covers(r, h))) return 'booked';
     if (dayReservations.some((r) => r.status === 'pending' && r.userId === user.id && covers(r, h))) return 'requested';
     if (sel && h >= sel.start && h < sel.end) return 'selected';
     if (atLimit && sel && (h === sel.end || h === sel.start - 1)) return 'limit';
@@ -81,17 +82,18 @@ export default function EquipmentDetailScreen({ navigation, route }: Props) {
     setNotice('');
   };
 
-  const onRequest = () => {
-    if (!sel) return;
-    const result = addReservation({
-      equipmentId: item.id,
-      userId: user.id,
-      date,
-      startHour: sel.start,
-      endHour: sel.end,
-    });
-    if (result.ok) setSent(true);
-    else setConflict(result.conflict);
+  const onRequest = async () => {
+    if (!sel || submitting) return;
+    setSubmitting(true); setNotice('');
+    try {
+      await addReservation({ equipmentId: item.id, date, startHour: sel.start, endHour: sel.end });
+      setSent(true); setSel(null);
+    } catch (e) {
+      if (e instanceof ApiError && e.code === 'SLOT_CONFLICT') {
+        setConflict({ date, startHour: sel.start, endHour: sel.end });
+      } else setNotice(e instanceof Error ? e.message : 'Could not send request.');
+      await refresh();
+    } finally { setSubmitting(false); }
   };
 
   const renderSlot = (h: number) => {
@@ -219,10 +221,10 @@ export default function EquipmentDetailScreen({ navigation, route }: Props) {
           <Pressable
             style={[styles.request, !sel && styles.requestOff]}
             onPress={onRequest}
-            disabled={!sel}
+              disabled={!sel || submitting || !!error}
             accessibilityRole="button"
           >
-            <Text style={styles.requestText}>Request Reservation</Text>
+            <Text style={styles.requestText}>{submitting ? 'Sending...' : 'Request Reservation'}</Text>
           </Pressable>
           <Text style={styles.hint}>Your request is sent to staff for approval.</Text>
         </View>
@@ -236,12 +238,12 @@ export default function EquipmentDetailScreen({ navigation, route }: Props) {
               <Text style={styles.sheetTitle}>Time Slot No Longer Available</Text>
             </View>
             <Text style={styles.sheetText}>
-              Your reservation request could not be completed because another request was accepted just before yours.
+              An approved reservation overlaps your selected time. Please choose another slot.
             </Text>
             {conflict && (
               <View style={styles.conflictBox}>
                 <View style={styles.conflictTop}>
-                  <Text style={styles.conflictLabel}>CONFLICTING SCHEDULE</Text>
+                  <Text style={styles.conflictLabel}>REQUESTED SCHEDULE</Text>
                   <View style={styles.bookedBadge}><Text style={styles.bookedText}>Booked</Text></View>
                 </View>
                 <Text style={styles.conflictValue}>{formatDate(conflict.date)} · {formatRange(conflict.startHour, conflict.endHour)}</Text>

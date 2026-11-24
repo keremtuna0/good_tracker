@@ -18,9 +18,14 @@ export default function LoginScreen() {
   const [password, setPassword] = useState(DEMO[0].password);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
 
-  const onSignIn = () => {
-    if (!signIn(email, password)) setError('Incorrect e-mail or password.');
+  const onSignIn = async () => {
+    if (busy) return;
+    setBusy(true); setError('');
+    try { await signIn(email, password); }
+    catch (e) { setError(e instanceof Error ? e.message : 'Could not sign in.'); }
+    finally { setBusy(false); }
   };
 
   const pickDemo = (d: (typeof DEMO)[number]) => {
@@ -79,8 +84,8 @@ export default function LoginScreen() {
 
           {error !== '' && <Text style={styles.error}>{error}</Text>}
 
-          <Pressable style={styles.button} onPress={onSignIn}>
-            <Text style={styles.buttonText}>Sign In</Text>
+          <Pressable style={styles.button} onPress={onSignIn} disabled={busy}>
+            <Text style={styles.buttonText}>{busy ? 'Signing in...' : 'Sign In'}</Text>
           </Pressable>
 
           <View style={styles.demoHeader}>

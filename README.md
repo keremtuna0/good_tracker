@@ -1,64 +1,66 @@
 # GoodTracker
 
-GoodTracker is our **SE3003 - Software Project Management** project. We plan to build a mobile app for reserving shared laboratory and office equipment.
+SE3003 project: an Android app for reserving shared laboratory equipment.
 
-We are currently preparing M1. The application has not been implemented yet.
+## Midterm status
 
-## Planned features
+The API handles sign-in, roles, equipment and reservation requests. The existing mobile login, equipment list/detail and staff request screens now use it. My Reservations and Inventory are still placeholders; their UI work is left for the next stage.
 
-- Sign in and browse equipment.
-- Search by category or location and check availability.
-- Request or cancel a reservation and see its status.
-- Prevent overlapping bookings.
-- Let staff manage equipment and approve or reject requests.
+Stack: Expo / React Native / TypeScript, Express / TypeScript, Supabase PostgreSQL and Auth.
 
-Our goal is a small Android demo. Payments, university SSO, push notifications and an app-store release are outside the initial scope.
+For the classroom demo, the API can also use a local JSON file. This mode keeps sample data after a server restart. It is not a live Supabase connection. Sessions last one hour and are cleared on restart.
 
-## Planned technologies
+## Run
 
-React Native with Expo and TypeScript for mobile, Node.js with Express for the backend, and Supabase for the database and authentication. We will check this setup with a small prototype before building the full flow.
+Node.js 24+ is required.
 
-## Team
+API:
 
-| Member | Main role |
-| --- | --- |
-| Talha Yılmaz | Mobile UI and navigation |
-| Eylül Melda Çakmak | Mobile API integration and acceptance checks |
-| Kerem Tuna | Database and equipment API |
-| Kardelen Darğın | Reservation API and project tracking |
-
-Testing and documentation are shared responsibilities.
-
-## Folder structure
-
-```text
-good_tracker/
-├── README.md
-├── .gitignore
-├── mobile/
-├── backend/
-└── docs/
-    └── m1/
-        ├── M1 Project Initiation Report Template.docx
-        └── evidence/
+```powershell
+cd backend
+pnpm install --frozen-lockfile
+Copy-Item .env.example .env
+pnpm start
 ```
 
-Mobile and backend are empty for now. We will add code folders when we start implementing features. The .gitkeep files only keep empty folders visible in Git.
+Mobile, in another terminal:
 
-## M1 documents
+```powershell
+cd mobile
+npm ci
+Copy-Item .env.example .env
+# Set EXPO_PUBLIC_API_URL to the computer's LAN IP.
+npm start
+```
 
-For now, docs is limited to M1: the official Word template, the report we prepare from it, its final PDF and the evidence used in that report. We will not create folders for later milestones yet.
+Use the same Wi-Fi for the phone and computer. For an Android emulator use `http://10.0.2.2:3000`. For a real phone use `http://<computer IP>:3000`.
 
-Keep the charter, stakeholder analysis, delivery approach, success criteria, risks, planned vs. actual, next milestone plan and individual contributions together in the report. Write the 150–200 word executive summary after these sections are ready. Separate Markdown files for each section are not needed.
+Local demo accounts, password `demo1234`:
 
-The local task allocation records Kerem for the charter and report assembly, Talha for stakeholder analysis, Eylül for success criteria, and Kardelen for the delivery approach and risks. Everyone adds their own actual contribution and reviews the report.
+- `borrower@demo.test`
+- `borrower2@demo.test`
+- `staff@demo.test`
 
-Use evidence for real work: meeting notes, relevant designs, board screenshots and contribution links. Explain what each item shows in the report. Keep short weekly updates in the project board or issue comments for now. Confirm the deadline and submission instructions in the LMS.
+## Supabase
 
-## Working together
+Apply `backend/supabase/migrations/001_midterm.sql` once to a new Supabase project. Set `DATA_MODE=supabase`, `SUPABASE_URL` and `SUPABASE_ANON_KEY` in the backend environment.
 
-[Project board](https://github.com/users/keremtuna0/projects/2) · [Issues](https://github.com/keremtuna0/good_tracker/issues)
+The optional `backend/scripts/seed-supabase.ts` creates sample users and equipment. Run it once from `backend` with `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` and a `SEED_PASSWORD` of at least 12 characters. Remove the setup key afterwards; the running API uses the public anon/publishable key and each user's token. Do not put secrets in Git or the mobile environment.
 
-Use Backlog → To Do → In Progress → Review/Test → Done. Each task should have an owner and a clear expected result. Work on a branch, open a pull request and ask another member to review it. Record completed work honestly with links to the actual changes.
+## Checks
 
-Older issue descriptions may mention separate document paths. For M1, those sections will now be collected in the shared report under docs/m1.
+```powershell
+cd backend
+pnpm typecheck
+pnpm lint
+pnpm test
+cd ../mobile
+npm run typecheck
+npm run lint
+```
+
+Mobile lint uses the tools installed in `backend`.
+
+[API](docs/m3/backend-api.md) · [Data model](docs/m3/data-model.md) · [Test notes](docs/m3/backend-increment.md) · [Plan vs actual](docs/m3/plan-vs-actual.md)
+
+Live Supabase and Android device checks are still pending. Historical reports and screenshots describe their original dates.

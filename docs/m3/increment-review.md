@@ -1,5 +1,7 @@
 # M3 Increment Review
 
+> Historical review of the 21 November build. A later API-backed increment is documented in [backend-increment.md](backend-increment.md). The screenshots below remain evidence of the older sign-in build only.
+
 **Reviewer:** Talha Yılmaz | **Issue:** #10 | **Date:** 21 November 2026
 **Build:** commit `73b1c70`, run with Expo Go on Android `redmi 15 pro`
 
